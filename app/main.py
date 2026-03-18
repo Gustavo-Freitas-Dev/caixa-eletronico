@@ -18,7 +18,7 @@ def depositar(valor:float):
     global saldo
 
     saldo += valor
-    historico.append(f'-{valor}')
+    historico.append(f'DEPÓSITO +{valor}')
 
 
     return {
@@ -36,7 +36,7 @@ def sacar(valor:float):
         return {'ERROR': 'Saldo insuficiente.'}
     else:
         saldo -= valor
-        historico.append(f'-{valor}')
+        historico.append(f'SAQUE: -{valor}')
 
         return {
             'message': 'Saque realizado com sucesso!',
