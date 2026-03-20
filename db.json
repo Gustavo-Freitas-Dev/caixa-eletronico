@@ -3,48 +3,53 @@
         {
             "id": 1,
             "usuario": "Gustavo Luís Nascimento de Freitas",
-            "saldo": 553.0,
+            "saldo": 412.0,
             "historico": [
                 "DEPÓSITO +502.0",
                 "DEPÓSITO +10.0",
-                "DEPÓSITO +41.0"
+                "DEPÓSITO +41.0",
+                "SAQUE: -141.0"
             ],
             "ativo": true
         },
         {
             "id": 2,
             "usuario": "Vitoria de Almeida Alves",
-            "saldo": 220.0,
+            "saldo": 120.0,
             "historico": [
-                "DEPÓSITO +220.0"
+                "DEPÓSITO +220.0",
+                "SAQUE: -100.0"
             ],
             "ativo": true
         },
         {
             "id": 3,
             "usuario": "Marilu Nascimento de Freitas",
-            "saldo": 626.0,
+            "saldo": 502.0,
             "historico": [
                 "DEPÓSITO +151.0",
-                "DEPÓSITO +475.0"
+                "DEPÓSITO +475.0",
+                "SAQUE: -124.0"
             ],
             "ativo": true
         },
         {
             "id": 4,
             "usuario": "Claudinei Luís de Freitas",
-            "saldo": 462.0,
+            "saldo": 420.0,
             "historico": [
-                "DEPÓSITO +462.0"
+                "DEPÓSITO +462.0",
+                "SAQUE: -42.0"
             ],
             "ativo": true
         },
         {
             "id": 5,
             "usuario": "Karolyne Luíse Nascimento de Freitas",
-            "saldo": 100.0,
+            "saldo": 40.0,
             "historico": [
-                "DEPÓSITO +100.0"
+                "DEPÓSITO +100.0",
+                "SAQUE: -60.0"
             ],
             "ativo": true
         }

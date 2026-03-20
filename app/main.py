@@ -80,9 +80,9 @@ def depositar(id:int, valor:float):
 
 @app.post('/sacar')
 def sacar(id:int, valor:float):
-    global usuarios
+    dados = carregar_dados()
 
-    for usuario in usuarios:
+    for usuario in dados['usuarios']:
         if usuario['id'] == id:
             if valor <= 0:
                 return{'Erro': 'O valor de saque deve ser maior que zero.'}
@@ -91,16 +91,23 @@ def sacar(id:int, valor:float):
             else:
                 usuario['saldo'] -= valor
                 usuario['historico'].append(f'SAQUE: -{valor}')
+                salvar_dados(dados)
                 return {
                     'message': 'Saque realizado com sucesso!',
                     'valor sacado': valor
                 }
+            
+    return {
+    'erro': 'ID_INEXISTENTE',
+    'mensagem': f'Não foi encontrada nenhuma conta com o ID {id}.'
+    }, 404
+
 
 @app.get('/extrato')
 def ver_historico(id:int):
-    global usuarios
+    dados = carregar_dados()
 
-    for usuario in usuarios:
+    for usuario in dados['usuarios']:
         if usuario['id'] == id:
             return {
                 'usuario': usuario['usuario'],
