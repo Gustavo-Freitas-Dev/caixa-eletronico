@@ -1,0 +1,52 @@
+{
+    "usuarios": [
+        {
+            "id": 1,
+            "usuario": "Gustavo Luís Nascimento de Freitas",
+            "saldo": 553.0,
+            "historico": [
+                "DEPÓSITO +502.0",
+                "DEPÓSITO +10.0",
+                "DEPÓSITO +41.0"
+            ],
+            "ativo": true
+        },
+        {
+            "id": 2,
+            "usuario": "Vitoria de Almeida Alves",
+            "saldo": 220.0,
+            "historico": [
+                "DEPÓSITO +220.0"
+            ],
+            "ativo": true
+        },
+        {
+            "id": 3,
+            "usuario": "Marilu Nascimento de Freitas",
+            "saldo": 626.0,
+            "historico": [
+                "DEPÓSITO +151.0",
+                "DEPÓSITO +475.0"
+            ],
+            "ativo": true
+        },
+        {
+            "id": 4,
+            "usuario": "Claudinei Luís de Freitas",
+            "saldo": 462.0,
+            "historico": [
+                "DEPÓSITO +462.0"
+            ],
+            "ativo": true
+        },
+        {
+            "id": 5,
+            "usuario": "Karolyne Luíse Nascimento de Freitas",
+            "saldo": 100.0,
+            "historico": [
+                "DEPÓSITO +100.0"
+            ],
+            "ativo": true
+        }
+    ]
+}

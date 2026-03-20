@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from database.models import carregar_dados, salvar_dados
 
 app = FastAPI()
 
@@ -9,49 +10,73 @@ usuarios = []
 def home():
     return{'message': 'A API está no ar!'}
 
+@app.get("/usuarios")
+def listar():
+    dados = carregar_dados()
+    return dados
+
 @app.post('/criar-usuario')
 def criar_usuario(usuario:str):
     global contador_id
+    dados = carregar_dados()
 
-    usuario = {
-        'id': contador_id,
+    novo_usuario = {
+        'id': len(dados['usuarios']) + 1,
         'usuario': usuario,
         'saldo': 0,
         'historico': [],
         'ativo': True
     }
 
-    usuarios.append(usuario)
-    contador_id += 1
+    dados['usuarios'].append(novo_usuario)
+    salvar_dados(dados)
+    return novo_usuario
 
 @app.get('/vizualizar_usuarios')
 def visualizar_usuarios():
-    return usuarios
+    dados = carregar_dados()
+
+    return dados
 
 @app.get('/saldo')
 def ver_saldo(id:int):
-    global usuarios
+    dados = carregar_dados()
 
-    for usuario in usuarios:
+    for usuario in dados['usuarios']:
         if usuario['id'] == id:  
-            return usuario
+            return {
+                'usuario': usuario['usuario'],
+                'saldo': usuario['saldo']
+            }
         
     return {"erro": "Usuário não encontrado"}
 
 
 @app.post('/depositar')
 def depositar(id:int, valor:float):
-    global usuarios
+    if valor <=0:
+        return {
+            'erro': 'VALOR_INVALIDO',
+            'mensagem': 'O valor do depósito deve ser maior que zero.'
+        }, 400
 
-    for usuario in usuarios:
+    dados = carregar_dados()
+
+    for usuario in dados['usuarios']:
         if usuario['id'] == id:
             usuario['saldo'] += valor
             usuario['historico'].append(f'DEPÓSITO +{valor}')
 
+            salvar_dados(dados)
+            return {
+                'mensagem': 'Depósito realizado',
+                'Valor depósitado': valor
+                }
+        
     return {
-        'mensagem': 'Depósito realizado',
-        'Valor depósitado': valor
-        }   
+    'erro': 'ID_INEXISTENTE',
+    'mensagem': f'Não foi encontrada nenhuma conta com o ID {id}.'
+    }, 404
 
 @app.post('/sacar')
 def sacar(id:int, valor:float):
