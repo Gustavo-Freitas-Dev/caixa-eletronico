@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from database.models import carregar_dados, salvar_dados
+from datetime import datetime
 
 app = FastAPI()
 
@@ -16,13 +17,15 @@ def listar():
     return dados
 
 @app.post('/criar-usuario')
-def criar_usuario(usuario:str):
+def criar_usuario(nome:str, usuario:str, senha:str):
     global contador_id
     dados = carregar_dados()
 
     novo_usuario = {
         'id': len(dados['usuarios']) + 1,
+        'nome': nome,
         'usuario': usuario,
+        'senha': senha,
         'saldo': 0,
         'historico': [],
         'ativo': True
@@ -45,7 +48,7 @@ def ver_saldo(id:int):
     for usuario in dados['usuarios']:
         if usuario['id'] == id:  
             return {
-                'usuario': usuario['usuario'],
+                'usuario': usuario['nome'],
                 'saldo': usuario['saldo']
             }
         
@@ -65,7 +68,7 @@ def depositar(id:int, valor:float):
     for usuario in dados['usuarios']:
         if usuario['id'] == id:
             usuario['saldo'] += valor
-            usuario['historico'].append(f'DEPÓSITO +{valor}')
+            usuario['historico'].append(f'DEPÓSITO | R$ {valor:.2f} | {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}')
 
             salvar_dados(dados)
             return {
@@ -90,7 +93,8 @@ def sacar(id:int, valor:float):
                 return {'Erro': 'Saldo insuficiente.'}
             else:
                 usuario['saldo'] -= valor
-                usuario['historico'].append(f'SAQUE: -{valor}')
+                usuario['historico'].append(f'  SAQUE  | R$ {valor:.2f} | {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}')
+
                 salvar_dados(dados)
                 return {
                     'message': 'Saque realizado com sucesso!',
@@ -110,7 +114,7 @@ def ver_historico(id:int):
     for usuario in dados['usuarios']:
         if usuario['id'] == id:
             return {
-                'usuario': usuario['usuario'],
+                'usuario': usuario['nome'],
                 'saldo': usuario['saldo'],
                 'historico': usuario['historico']
-            }
+            }    
