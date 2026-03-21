@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from database.models import carregar_dados, salvar_dados
 from datetime import datetime
+from utils.services import gerar_hash_senha, verificar_senha
 
 app = FastAPI()
 
@@ -16,24 +17,50 @@ def listar():
     dados = carregar_dados()
     return dados
 
+from datetime import datetime
+
 @app.post('/criar-usuario')
-def criar_usuario(nome:str, usuario:str, senha:str):
-    global contador_id
+def criar_usuario(
+    nome: str,
+    usuario: str,
+    email: str,
+    senha: str,
+    cpf: str,
+    telefone: str
+):
     dados = carregar_dados()
 
     novo_usuario = {
         'id': len(dados['usuarios']) + 1,
         'nome': nome,
         'usuario': usuario,
-        'senha': senha,
+        'email': email,
+        'senha': gerar_hash_senha(senha),
+        'cpf': cpf,
+        'telefone': telefone,
         'saldo': 0,
         'historico': [],
-        'ativo': True
+        'ativo': True,
+        'data_criacao': datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
+        'ultimo_login': None,
+        'bloqueado': False
     }
 
     dados['usuarios'].append(novo_usuario)
     salvar_dados(dados)
-    return novo_usuario
+
+    return novo_usuario  
+
+@app.post('/login')
+def login(usuario:str, senha:str):
+    dados = carregar_dados()
+
+    for user in dados['usuarios']:
+        if user['usuario'] == usuario:
+            if verificar_senha(senha, user['senha']):
+                return {'message': 'Login realizado com sucesso!'}
+    
+    return {'ERRO': 'Login incorreto.'}
 
 @app.get('/vizualizar_usuarios')
 def visualizar_usuarios():
