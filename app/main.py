@@ -19,6 +19,8 @@ def listar():
 
 from datetime import datetime
 
+from datetime import datetime
+
 @app.post('/criar-usuario')
 def criar_usuario(
     nome: str,
@@ -29,6 +31,17 @@ def criar_usuario(
     telefone: str
 ):
     dados = carregar_dados()
+
+    # 🔍 Validação
+    for u in dados['usuarios']:
+        if u['usuario'] == usuario:
+            return {'ERRO': 'Usuário já existe'}
+        
+        if u['email'] == email:
+            return {'ERRO': 'Email já cadastrado'}
+        
+        if u['cpf'] == cpf:
+            return {'ERRO': 'CPF já cadastrado'}
 
     novo_usuario = {
         'id': len(dados['usuarios']) + 1,
@@ -49,7 +62,7 @@ def criar_usuario(
     dados['usuarios'].append(novo_usuario)
     salvar_dados(dados)
 
-    return novo_usuario  
+    return novo_usuario
 
 @app.post('/login')
 def login(usuario:str, senha:str):
@@ -64,7 +77,7 @@ def login(usuario:str, senha:str):
 
 @app.get('/vizualizar_usuarios')
 def visualizar_usuarios():
-    dados = carregar_dados()
+    dados = carregar_dados()    
 
     return dados
 
